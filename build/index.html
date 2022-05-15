@@ -870,7 +870,7 @@
                           <div class="form-group form-group-with-icon">
                             <i class="fa fa-user"></i>
                             <label>Full Name</label>
-                            <input id="form_name" type="text" name="name" class="form-control" placeholder required="required" data-error="Name is required.">
+                            <input id="form_name" type="text" name="name" class="form-control" placeholder data-error="Name is required." required />
                             <div class="form-control-border"></div>
                             <div class="help-block with-errors"></div>
                           </div>
@@ -878,7 +878,7 @@
                           <div class="form-group form-group-with-icon">
                             <i class="fa fa-envelope"></i>
                             <label>Email Address</label>
-                            <input id="form_email" type="email" name="email" class="form-control" placeholder required="required" data-error="Valid email is required.">
+                            <input id="form_email" type="email" name="email" class="form-control" placeholder data-error="Valid email is required." required />
                             <div class="form-control-border"></div>
                             <div class="help-block with-errors"></div>
                           </div>
@@ -886,7 +886,7 @@
                           <div class="form-group form-group-with-icon">
                             <i class="fa fa-phone"></i>
                             <label>Phone</label>
-                            <input name="phone" id="form_phone" class="form-control" pattern="^\d{10}$" title="Please enter 10-digit mobile number!" placeholder type="text" data-error="Valid number is required." required>
+                            <input name="phone" id="form_phone" class="form-control" pattern="^\d{10}$" title="Please enter 10-digit mobile number!" placeholder type="text" data-error="Valid number is required." required />
                             <div class="form-control-border"></div>
                             <div class="help-block with-errors"></div>
                           </div>
@@ -894,14 +894,14 @@
                           <div class="form-group form-group-with-icon">
                             <i class="fa fa-comment"></i>
                             <label>Message for Me</label>
-                            <textarea id="form_message" name="message" class="form-control" placeholder rows="4" required="required" data-error="Please, leave me a message."></textarea>
+                            <textarea id="form_message" name="message" class="form-control" placeholder rows="4" required data-error="Please, leave me a message."></textarea>
                             <div class="form-control-border"></div>
                             <div class="help-block with-errors"></div>
                           </div>
 
                           <!-- <div class="g-recaptcha" data-sitekey="6Le7RusfAAAAAG5IACtMVhYPOP5v0fIYsCXE9dQY"></div> -->
 
-                          <button type="submit" class="button btn-send">Send Message <i class="fa fa-spinner fa-spin loader"></i></button>
+                          <button type="submit" id="sendButton" class="button btn-send">Send Message <i class="fa fa-spinner fa-spin loader"></i></button>
                         </div>
                       </form>
                     </div>
@@ -946,8 +946,7 @@
 
       function onSubmitForm(){
 
-        document.querySelector('.loader').style.display = '';
-
+        
         const toSend = {
           from_name: document.querySelector('#form_name').value,
           to_name: "Murtaza Khachrodwala",
@@ -955,33 +954,37 @@
           message: `<p style="white-space: pre-line;">${document.querySelector('#form_message').value}</p>`,
           reply_to: document.querySelector('#form_email').value
         }
-
-        emailjs.send(
-          "service_ydstah5",
-          "template_n4mliyk",
-          toSend,
-          "user_u9080d0n2iVE5FdRcmGXE"
-        )
-          .then((response) => {
-            console.log("SUCCESS!", response.status, response.text);
-
-            const form  = document.querySelector('.contact_form');
-            form.reset();
-
-            document.querySelector('.loader').style.display = 'none';
-            document.querySelector('.success_msg').style.display='';
-            setTimeout(() => {
-              document.querySelector('.success_msg').style.display='none';
-            }, 5000);
-            // setSuccess(true);
-          })
-          .catch((err) => {
-            console.log("FAILED...", err);
-            document.querySelector('.danger_msg').style.display='';
-            setTimeout(() => {
-              document.querySelector('.danger_msg').style.display='none';
-            }, 5000);
-          });
+        
+        if(toSend.from_name !== '' && toSend.phone_no !== '' && toSend.message !== ''){
+          
+          document.querySelector('.loader').style.display = '';
+          emailjs.send(
+            "service_ydstah5",
+            "template_n4mliyk",
+            toSend,
+            "user_u9080d0n2iVE5FdRcmGXE"
+          )
+            .then((response) => {
+              console.log("SUCCESS!", response.status, response.text);
+  
+              const form  = document.querySelector('.contact_form');
+              form.reset();
+  
+              document.querySelector('.loader').style.display = 'none';
+              document.querySelector('.success_msg').style.display='';
+              setTimeout(() => {
+                document.querySelector('.success_msg').style.display='none';
+              }, 5000);
+              // setSuccess(true);
+            })
+            .catch((err) => {
+              console.log("FAILED...", err);
+              document.querySelector('.danger_msg').style.display='';
+              setTimeout(() => {
+                document.querySelector('.danger_msg').style.display='none';
+              }, 5000);
+            });
+        }
       }
     </script>
   </body>
